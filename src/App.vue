@@ -29,7 +29,8 @@ onMounted(() => {
 <template>
   <div>
     <div class="map" id="map"></div>
-    <div class="settings" id="settings"></div>
+    <div class="settings" id="settings">
+    </div>
   </div>
 </template>
 

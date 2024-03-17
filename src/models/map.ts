@@ -45,14 +45,14 @@ export class Map implements MetroMap {
 
             let text = this.draw.text(stations[i].branch.number.toString()).fill('white').font({ size: 28}).cx(cx).cy(cy);
             text.font({
-                family: 'Onest',
+                family: 'NTSomic',
                 weight: '750',
             })
 
             let naming = this.draw.text(stations[i].name).fill('black').font({ size: 25});
             naming.cx(cx + 30 + (naming.bbox().width / 2)).cy(cy);
             naming.font({
-                family: 'Onest',
+                family: 'NTSomic',
                 weight: '750',
                 leading: 1
             })
@@ -77,7 +77,7 @@ export class Map implements MetroMap {
 
             let text = this.draw.text(stations[i].name).font({ size: 35}).cx(last + stations[i].step).cy(textPosition);
             text.font({
-                family: 'Onest',
+                family: 'NTSomic',
                 weight: '750',
             })
         }
@@ -91,14 +91,14 @@ export class Map implements MetroMap {
 
         let text = this.draw.text(this.branch.number.toString()).font({ size: 35}).fill('#fff').cx(50).cy(50);
         text.font({
-            family: 'Onest',
+            family: 'NTSomic',
             weight: '750',
         })
 
         let naming = this.draw.text(this.branch.name).font({ size: 35});
         naming.cx(50 + 40 + (naming.bbox().width / 2)).cy(50);
         naming.font({
-            family: 'Onest',
+            family: 'NTSomic',
             weight: '750',
         })
 
