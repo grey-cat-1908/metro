@@ -65,12 +65,12 @@ export class Map implements MetroMap {
         for (let i = 0; i < stations.length; i++) {
             let cx = last + stations[i].step;
             if (stations[i].connectedStations.length > 0) {
-                this.draw.circle(50).fill('#f06').cx(cx).cy(yMax)
+                this.draw.circle(50).fill(this.branch.color).cx(cx).cy(yMax)
                 this.draw.circle(25).fill('white').cx(cx).cy(yMax)
 
                 this.drawConnectedStations(stations[i].connectedStations, stations[i].up, cx, yMax);
             } else {
-                this.draw.rect(15, 50).fill('#f06').cx(cx).cy(yMax)
+                this.draw.rect(15, 50).fill(this.branch.color).cx(cx).cy(yMax)
             }
 
             let textPosition: number = this.getTextPosition(stations[i].up)
@@ -87,11 +87,26 @@ export class Map implements MetroMap {
         this.draw = this.draw.size(window.innerWidth, (window.innerHeight-50) / 2);
         this.draw.clear();
 
+        this.draw.circle(50).fill(this.branch.color).cx(50).cy(50)
+
+        let text = this.draw.text(this.branch.number.toString()).font({ size: 35}).fill('#fff').cx(50).cy(50);
+        text.font({
+            family: 'Onest',
+            weight: '750',
+        })
+
+        let naming = this.draw.text(this.branch.name).font({ size: 35});
+        naming.cx(50 + 40 + (naming.bbox().width / 2)).cy(50);
+        naming.font({
+            family: 'Onest',
+            weight: '750',
+        })
+
         const lineMax = window.innerWidth - 200;
         const yMax = (window.innerHeight-50) / 4;
 
         let line = this.draw.line(200, yMax, lineMax, yMax)
-        line.stroke({ color: '#f06', width: 16})
+        line.stroke({ color: this.branch.color, width: 16})
 
         this.drawStations(this.branch.stations)
     }

@@ -7,13 +7,19 @@ import {ConnectedStation} from "./models/connectedStation.ts";
 import {ExtraBranch} from "./models/extraBranch.ts";
 
 onMounted(() => {
-  let extraBranch1: ExtraBranch = new ExtraBranch("Таганско-Краснопресненская", "#800080", 2)
-  let extraStation1: ConnectedStation = new ConnectedStation("Кузнецкий\nмост", extraBranch1)
+  let extraBranch1: ExtraBranch = new ExtraBranch( "#EF161E", 1)
+  let extraStation1: ConnectedStation = new ConnectedStation("Библиотека\nимени Ленина", extraBranch1)
 
-  let station1: Station = new Station("Охотный ряд", false, [], 0)
-  let station2: Station = new Station("Лубянка", true, [extraStation1], 500)
+  let extraBranch4: ExtraBranch = new ExtraBranch( "#00BFFF", 4)
+  let extraStation4: ConnectedStation = new ConnectedStation("Александровский\nсад", extraBranch4)
 
-  let branch: Branch = new Branch('Best','#FF0000', 1, [station1, station2])
+  let extraBranch9: ExtraBranch = new ExtraBranch( "#999999", 9)
+  let extraStation9: ConnectedStation = new ConnectedStation("Боровицкая", extraBranch9)
+
+  let station1: Station = new Station("Смоленская", false, [], 0)
+  let station2: Station = new Station("Арбатская", true, [extraStation1, extraStation9, extraStation4], 500)
+
+  let branch: Branch = new Branch('Арбатско-Покровская линия','#0078BE', 3, [station1, station2])
   let map: Map = new Map(branch)
 
   map.build()
