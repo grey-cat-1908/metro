@@ -45,7 +45,7 @@ export class Map implements MetroMap {
 
             let text = this.draw.text(stations[i].branch.number.toString()).fill('white').font({ size: 28}).cx(cx).cy(cy);
             text.font({
-                family: 'NTSomic',
+                family: 'Roboto Mono',
                 weight: '750',
             })
 
@@ -91,7 +91,7 @@ export class Map implements MetroMap {
 
         let text = this.draw.text(this.branch.number.toString()).font({ size: 35}).fill('#fff').cx(50).cy(50);
         text.font({
-            family: 'NTSomic',
+            family: 'Roboto Mono',
             weight: '750',
         })
 
