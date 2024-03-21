@@ -7,7 +7,7 @@ export interface StationInterface {
     step: number;
 }
 
-export class Station implements  StationInterface {
+export class Station implements StationInterface {
     name: string;
     up: boolean;
     connectedStations: Array<ConnectedStation>

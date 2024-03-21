@@ -4,3 +4,15 @@
     font-family: NTSomic;
     src: url(./assets/NTSomic-Bold.ttf);
 }
+
+*, .settings {
+    overflow: hidden;
+}
+
+.map, svg {
+    overflow-x: auto;
+}
+
+.v-btn {
+    margin-bottom: 1em;
+}
