@@ -6,7 +6,7 @@
 }
 
 *, .settings {
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 .map, svg {
@@ -15,4 +15,8 @@
 
 .v-btn {
     margin-bottom: 1em;
+}
+
+center {
+    padding: 10px;
 }

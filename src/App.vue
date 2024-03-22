@@ -9,6 +9,7 @@ import {ExtraBranch} from "./models/map/extraBranch.ts";
 // @ts-ignore
 import {set, useEventListener} from '@vueuse/core'
 import {Settings} from "./models/settings.ts";
+import {defineStore} from "pinia";
 
 const element = ref<HTMLDivElement>()
 
@@ -30,6 +31,20 @@ let settings: Settings = new Settings(mapWidth.value, mapHeight.value);
 
 let map: Map;
 
+const useStore = defineStore('branch', {
+  // arrow function recommended for full type inference
+  state: () => {
+    return {
+      name: 'Тест',
+      number: 1,
+      color: '#0078BE'
+    }
+  },
+})
+
+// @ts-ignore
+const store = useStore()
+
 onMounted(() => {
   map = new Map(branch, settings);
 
@@ -49,7 +64,7 @@ function build () {
   let station1: Station = new Station("Смоленская", false, [], 0)
   let station2: Station = new Station("Арбатская", true, [extraStation1, extraStation9, extraStation4], 200)
 
-  let branch: Branch = new Branch('Арбатско-Покровская линия','#0078BE', 3, [station1, station2])
+  let branch: Branch = new Branch(store.name,store.color, store.number, [station1, station2])
   let settings: Settings = new Settings(mapWidth.value, mapHeight.value);
 
   map.setSettings(settings)
@@ -79,8 +94,48 @@ function build () {
                   <v-text-field v-model="mapHeight"></v-text-field>
                 </li>
                 <li>
-                  <h3>Ветка:</h3>
-                  <v-btn size="x-large" variant="flat" block color="blue">Конфигурация</v-btn>
+                  <h3>Линия:</h3>
+                  <v-dialog max-width="800">
+                    <template v-slot:activator="{ props: activatorProps }">
+                      <v-btn
+                          v-bind="activatorProps"
+                          color="blue"
+                          size="x-large"
+                          variant="flat"
+                          block
+                          text="Конфигурация"
+                      ></v-btn>
+                    </template>
+
+                    <template v-slot:default="{ isActive }">
+                      <v-card title="Конфигурация">
+                        <template v-slot:text>
+                          <h2>Название:</h2>
+                          <v-text-field v-model="store.name"></v-text-field>
+
+                          <h2>Номер:</h2>
+                          <v-text-field v-model="store.number"></v-text-field>
+
+                          <h2>Цвет:</h2>
+                          <center>
+                            <v-color-picker v-model="store.color" mode="hex"></v-color-picker>
+                          </center>
+                        </template>
+
+                        <hr>
+
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+
+                          <v-btn
+                              text="Закрыть"
+                              variant="text"
+                              @click="isActive.value = false"
+                          ></v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </template>
+                  </v-dialog>
                 </li>
               </ul>
             </div>
@@ -100,7 +155,6 @@ function build () {
                 </li>
                 <li>
                   <h3>Ветка:</h3>
-                  <v-btn size="x-large" variant="flat" block color="blue">Конфигурация</v-btn>
                 </li>
               </ul>
             </div>
