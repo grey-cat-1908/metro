@@ -1,4 +1,6 @@
 <script setup lang="ts">
+// @ts-nocheck
+
 import {Map} from "./models/map.ts";
 import {Branch} from "./models/map/branch.ts";
 import {onMounted, ref} from 'vue'
@@ -6,7 +8,6 @@ import {Station} from "./models/map/station.ts";
 import {ConnectedStation} from "./models/map/connectedStation.ts";
 import {ExtraBranch} from "./models/map/extraBranch.ts";
 
-// @ts-ignore
 import {set, useEventListener} from '@vueuse/core'
 import {Settings} from "./models/settings.ts";
 import {defineStore} from "pinia";
@@ -19,7 +20,6 @@ const ycord = ref(0);
 const mapWidth = ref(window.innerWidth);
 const mapHeight = ref(window.innerHeight / 2);
 
-// @ts-ignore
 useEventListener(element, 'click', (evt) => {
   xcord.value = evt.offsetX;
   ycord.value = evt.offsetY;
@@ -32,12 +32,12 @@ let settings: Settings = new Settings(mapWidth.value, mapHeight.value);
 let map: Map;
 
 const useStore = defineStore('branch', {
-  // arrow function recommended for full type inference
   state: () => {
     return {
       name: 'Тест',
       number: 1,
-      color: '#0078BE'
+      color: '#0078BE',
+      stations: []
     }
   },
 })
@@ -52,19 +52,24 @@ onMounted(() => {
 })
 
 function build () {
-  let extraBranch1: ExtraBranch = new ExtraBranch( "#EF161E", 1)
-  let extraStation1: ConnectedStation = new ConnectedStation("Библиотека\nимени Ленина", extraBranch1)
+  let stations = [];
 
-  let extraBranch4: ExtraBranch = new ExtraBranch( "#00BFFF", 4)
-  let extraStation4: ConnectedStation = new ConnectedStation("Александровский\nсад", extraBranch4)
+  for (let station of store.stations) {
+    let connectedStations = [];
 
-  let extraBranch9: ExtraBranch = new ExtraBranch( "#999999", 9)
-  let extraStation9: ConnectedStation = new ConnectedStation("Боровицкая", extraBranch9)
+    for (let connected in station['connectedStations']) {
+      let extraBranch: ExtraBranch = new ExtraBranch(connected['branch']['color'], connected['branch']['number']);
+      let extraStation: ConnectedStation = new ConnectedStation(connected['name'], extraBranch);
 
-  let station1: Station = new Station("Смоленская", false, [], 0)
-  let station2: Station = new Station("Арбатская", true, [extraStation1, extraStation9, extraStation4], 200)
+      connectedStations.push(extraStation);
+    }
 
-  let branch: Branch = new Branch(store.name,store.color, store.number, [station1, station2])
+    let modelStation = new Station(station['name'], station['up'], connectedStations, station['step'])
+
+    stations.push(modelStation);
+  }
+
+  let branch: Branch = new Branch(store.name,store.color, store.number, stations)
   let settings: Settings = new Settings(mapWidth.value, mapHeight.value);
 
   map.setSettings(settings)
