@@ -8,56 +8,89 @@ import {Station} from "./models/map/station.ts";
 import {ConnectedStation} from "./models/map/connectedStation.ts";
 import {ExtraBranch} from "./models/map/extraBranch.ts";
 
-import {set, useEventListener} from '@vueuse/core'
+import {useEventListener} from '@vueuse/core'
 import {Settings} from "./models/settings.ts";
-import {defineStore} from "pinia";
 
 const element = ref<HTMLDivElement>()
 
 const xcord = ref(0);
 const ycord = ref(0);
 
-const mapWidth = ref(window.innerWidth);
-const mapHeight = ref(window.innerHeight / 2);
-
 useEventListener(element, 'click', (evt) => {
   xcord.value = evt.offsetX;
   ycord.value = evt.offsetY;
 })
 
+import StationsTable from "./components/StationsTable.vue";
+import NewStation from "./components/NewStation.vue";
+import BaseSettings from "./components/BaseSettings.vue";
+
+import {useStore} from './utils/store.ts';
+const store = useStore()
 
 let branch: Branch = new Branch('','', -1, [])
-let settings: Settings = new Settings(mapWidth.value, mapHeight.value);
+let settings: Settings = new Settings(store.width, store.height);
 
 let map: Map;
 
-const useStore = defineStore('branch', {
-  state: () => {
-    return {
-      name: 'Тест',
-      number: 1,
-      color: '#0078BE',
-      stations: []
-    }
-  },
-})
-
-// @ts-ignore
-const store = useStore()
-
 onMounted(() => {
+  store.stations = [
+      {'name': 'Начало', 'up': true, 'connectedStations': [], 'step': 0},
+      {'name': 'Конец', 'up': true, 'connectedStations': [], 'step': store.width - 400}
+  ]
+
   map = new Map(branch, settings);
 
   build();
 })
 
+function importFile() {
+  let element = document.getElementById('fileInput');
+  element.click();
+}
+
+function setFile(event) {
+  const reader = new FileReader();
+  reader.addEventListener('load', (readEvent) => {
+    if (typeof readEvent.target.result === "string") {
+      let importedStore = JSON.parse(readEvent.target.result);
+
+      store.name = importedStore.name;
+      store.width = importedStore.width;
+      store.height = importedStore.height;
+      store.color = importedStore.color;
+      store.number = importedStore.number;
+      store.stations = importedStore.stations;
+
+      build();
+    }
+  });
+  reader.readAsText(event.target.files[0]);
+}
+
+function save () {
+  let text = JSON.stringify(store);
+  let filename = 'metroMap.json';
+  let element = document.createElement('a');
+  element.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+  document.body.removeChild(element);
+}
+
 function build () {
   let stations = [];
+
+  store.stations = store.stations.sort((a,b) => a.step - b.step);
 
   for (let station of store.stations) {
     let connectedStations = [];
 
-    for (let connected in station['connectedStations']) {
+    for (let connected of station['connectedStations']) {
       let extraBranch: ExtraBranch = new ExtraBranch(connected['branch']['color'], connected['branch']['number']);
       let extraStation: ConnectedStation = new ConnectedStation(connected['name'], extraBranch);
 
@@ -70,7 +103,7 @@ function build () {
   }
 
   let branch: Branch = new Branch(store.name,store.color, store.number, stations)
-  let settings: Settings = new Settings(mapWidth.value, mapHeight.value);
+  let settings: Settings = new Settings(store.width, store.height);
 
   map.setSettings(settings)
   map.setBranch(branch)
@@ -88,90 +121,25 @@ function build () {
           <v-col>
             <h2>Основные настройки</h2>
             <br>
-            <div class="">
-              <ul>
-                <li>
-                  <h3>Ширина схемы:</h3>
-                  <v-text-field v-model="mapWidth"></v-text-field>
-                </li>
-                <li>
-                  <h3>Высота схемы:</h3>
-                  <v-text-field v-model="mapHeight"></v-text-field>
-                </li>
-                <li>
-                  <h3>Линия:</h3>
-                  <v-dialog max-width="800">
-                    <template v-slot:activator="{ props: activatorProps }">
-                      <v-btn
-                          v-bind="activatorProps"
-                          color="blue"
-                          size="x-large"
-                          variant="flat"
-                          block
-                          text="Конфигурация"
-                      ></v-btn>
-                    </template>
-
-                    <template v-slot:default="{ isActive }">
-                      <v-card title="Конфигурация">
-                        <template v-slot:text>
-                          <h2>Название:</h2>
-                          <v-text-field v-model="store.name"></v-text-field>
-
-                          <h2>Номер:</h2>
-                          <v-text-field v-model="store.number"></v-text-field>
-
-                          <h2>Цвет:</h2>
-                          <center>
-                            <v-color-picker v-model="store.color" mode="hex"></v-color-picker>
-                          </center>
-                        </template>
-
-                        <hr>
-
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-
-                          <v-btn
-                              text="Закрыть"
-                              variant="text"
-                              @click="isActive.value = false"
-                          ></v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </template>
-                  </v-dialog>
-                </li>
-              </ul>
-            </div>
+            <BaseSettings/>
           </v-col>
           <v-col>
-            <h2>Основные настройки</h2>
+            <h2>Станции</h2>
             <br>
-            <div class="">
-              <ul>
-                <li>
-                  <h3>Ширина схемы:</h3>
-                  <v-text-field></v-text-field>
-                </li>
-                <li>
-                  <h3>Высота схемы:</h3>
-                  <v-text-field></v-text-field>
-                </li>
-                <li>
-                  <h3>Ветка:</h3>
-                </li>
-              </ul>
-            </div>
+            <NewStation />
+            <hr>
+            <StationsTable />
           </v-col>
           <v-col>
             <h2>Управление</h2>
             <br>
             <div class="">
-              <v-btn size="x-large" variant="flat" block color="blue">Импорт</v-btn>
+              <v-btn size="x-large" variant="flat" block color="blue" @click="importFile">Импорт</v-btn>
               <v-btn size="x-large" variant="flat" block color="orange">Экспорт</v-btn>
-              <v-btn size="x-large" variant="flat" block color="green">Сохранить</v-btn>
+              <v-btn size="x-large" variant="flat" block color="green" @click="save">Сохранить</v-btn>
               <v-btn size="x-large" variant="flat" block color="red" @click="build">Предпросмотр</v-btn>
+
+              <input type="file" id="fileInput" style="display: none" @change="setFile" accept=".json" />
               <hr>
               <br>
               <h2>Курсор: ({{ xcord }}; {{ ycord }})</h2>

@@ -11,6 +11,7 @@
 
 .map, svg {
     overflow-x: auto;
+    cursor: crosshair;
 }
 
 .v-btn {
@@ -19,4 +20,9 @@
 
 center {
     padding: 10px;
+}
+
+.v-slider-thumb, .v-slider-thumb__surface, .v-slider-thumb__ripple, .v-expansion-panel, .v-expansion-panel-title,
+.v-expansion-panel-title__overlay, .v-expansion-panel__shadow, h2 {
+    overflow: hidden;
 }
