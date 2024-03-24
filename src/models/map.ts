@@ -52,7 +52,13 @@ export class Map implements MetroMap {
 
             this.draw.circle(40).fill(stations[i].branch.color).cx(cx).cy(cy)
 
-            let text = this.draw.text(stations[i].branch.number.toString()).fill('white').font({ size: 28}).cx(cx).cy(cy);
+            let fontSize;
+            if (stations[i].branch.number.toString().length > 1) {
+                fontSize = 22;
+            } else {
+                fontSize = 28;
+            }
+            let text = this.draw.text(stations[i].branch.number.toString()).fill('white').font({ size: fontSize}).cx(cx).cy(cy);
             text.font({
                 family: 'Roboto Mono',
                 weight: '750',

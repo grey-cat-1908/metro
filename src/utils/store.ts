@@ -11,4 +11,6 @@ export const useStore = defineStore('branch', {
             height: window.innerHeight / 2
         }
     },
+
+
 })

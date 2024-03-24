@@ -39,6 +39,8 @@ onMounted(() => {
       {'name': 'Конец', 'up': true, 'connectedStations': [], 'step': store.width - 400}
   ]
 
+  window.onbeforeunload = () => false
+
   map = new Map(branch, settings);
 
   build();
@@ -117,7 +119,7 @@ function build () {
       connectedStations.push(extraStation);
     }
 
-    let modelStation = new Station(station['name'], station['up'], connectedStations, station['step'])
+    let modelStation = new Station(station['name'], station['up'], connectedStations, Number(station['step']))
 
     stations.push(modelStation);
   }
@@ -130,6 +132,10 @@ function build () {
 
   map.build()
 }
+
+store.$subscribe((mutation, state) => {
+  build();
+})
 </script>
 
 <template>
@@ -154,10 +160,9 @@ function build () {
             <h2>Управление</h2>
             <br>
             <div class="">
-              <v-btn size="x-large" variant="flat" block color="blue" @click="importFile">Импорт</v-btn>
-              <v-btn size="x-large" variant="flat" block color="orange" @click="exportFile">Экспорт</v-btn>
-              <v-btn size="x-large" variant="flat" block color="green" @click="save">Сохранить</v-btn>
-              <v-btn size="x-large" variant="flat" block color="red" @click="build">Предпросмотр</v-btn>
+              <v-btn size="x-large" variant="flat" block color="orange" @click="exportFile">Экспорт (svg)</v-btn>
+              <v-btn size="x-large" variant="flat" block color="green" @click="save">Сохранить (json)</v-btn>
+              <v-btn size="x-large" variant="flat" block color="blue" @click="importFile">Импорт (json)</v-btn>
 
               <input type="file" id="fileInput" style="display: none" @change="setFile" accept=".json" />
               <hr>
