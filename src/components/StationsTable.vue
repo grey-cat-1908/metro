@@ -10,12 +10,12 @@ const store = useStore()
     <thead>
     <tr>
       <th class="text-left">
-        Название
+        {{ $t('stationsTable.name') }}
       </th>
       <th class="text-left">
-        Шаг (<code>x</code>)
+        {{ $t('stationsTable.step') }} (<code>x</code>)
       </th>
-      <th class="text-left">Действие</th>
+      <th class="text-left">{{ $t('stationsTable.action') }}</th>
     </tr>
     </thead>
     <tbody>
@@ -35,16 +35,16 @@ const store = useStore()
           </template>
 
           <template v-slot:default="{ isActive }">
-            <v-card title="Конфигурация: Станция">
+            <v-card :title="$t('stationsTable.editStation.title')">
               <template v-slot:text>
-                <h2>Название:</h2>
+                <h2>{{ $t('stationsTable.editStation.name') }}:</h2>
                 <v-text-field v-model="store.stations[i-1].name"></v-text-field>
 
-                <h2>Отображение:</h2>
-                <v-btn v-if="store.stations[i-1].up == true" size="x-large" variant="flat" block color="green" @click="store.stations[i-1].up = false">Сверху</v-btn>
-                <v-btn v-else size="x-large" variant="flat" block color="blue" @click="store.stations[i-1].up = true">Снизу</v-btn>
+                <h2>{{ $t('stationsTable.editStation.show') }}:</h2>
+                <v-btn v-if="store.stations[i-1].up == true" size="x-large" variant="flat" block color="green" @click="store.stations[i-1].up = false">{{ $t('stationsTable.editStation.up') }}</v-btn>
+                <v-btn v-else size="x-large" variant="flat" block color="blue" @click="store.stations[i-1].up = true">{{ $t('stationsTable.editStation.down') }}</v-btn>
 
-                <h2>Шаг (<code>x: 0 — {{ store.width - 400 }}</code>):</h2>
+                <h2>{{ $t('stationsTable.editStation.step') }} (<code>x: 0 — {{ store.width - 400 }}</code>):</h2>
                 <div class="">
                   <v-slider
                       class="ma-5"
@@ -65,14 +65,14 @@ const store = useStore()
                     </template>
                   </v-slider>
                 </div>
-                <h2>Связанные станции (переходы):</h2>
+                <h2>{{ $t('stationsTable.editStation.connectedStations.title') }}</h2>
                 <br>
                 <v-btn
                     color="purple"
                     size="x-large"
                     variant="flat"
                     block
-                    text="Добавить переход"
+                    :text="$t('stationsTable.editStation.connectedStations.add')"
                     @click="store.stations[i-1].connectedStations.push({'name': 'Тест', 'branch': {'color': '#fff', 'number': 2}})">
                 </v-btn>
                 <v-expansion-panels>
@@ -84,23 +84,25 @@ const store = useStore()
                       <h2>{{ store.stations[i-1].connectedStations[j - 1].name }}</h2>
                     </template>
                     <template v-slot:text>
-                      <h3>Название:</h3>
+                      <h3>{{ $t('stationsTable.editStation.connectedStations.name') }}:</h3>
                       <v-text-field v-model="store.stations[i-1].connectedStations[j - 1].name"></v-text-field>
 
-                      <h3>Номер линии:</h3>
+                      <h3>{{ $t('stationsTable.editStation.connectedStations.number') }}:</h3>
                       <v-text-field v-model="store.stations[i-1].connectedStations[j - 1].branch.number"></v-text-field>
 
-                      <h2>Цвет:</h2>
+                      <h3>{{ $t('stationsTable.editStation.connectedStations.color') }}:</h3>
                       <center>
                         <v-color-picker v-model="store.stations[i-1].connectedStations[j - 1].branch.color" mode="hex"></v-color-picker>
                       </center>
+
+                      <br>
 
                       <v-btn
                           color="red"
                           size="x-large"
                           variant="flat"
                           block
-                          text="Удалить переход"
+                          :text="$t('stationsTable.editStation.connectedStations.delete')"
                           @click="store.stations[i-1].connectedStations.splice(j - 1, 1);">
                       </v-btn>
                     </template>
@@ -114,7 +116,7 @@ const store = useStore()
                     size="x-large"
                     variant="flat"
                     block
-                    text="Удалить станцию"
+                    :text="$t('stationsTable.editStation.delete')"
                     @click="isActive.value = false; store.stations.splice(i - 1, 1);">
                 </v-btn>
               </template>
@@ -125,7 +127,7 @@ const store = useStore()
                 <v-spacer></v-spacer>
 
                 <v-btn
-                    text="Закрыть"
+                    :text="$t('stationsTable.editStation.close')"
                     variant="text"
                     @click="isActive.value = false"
                 ></v-btn>

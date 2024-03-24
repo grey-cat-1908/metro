@@ -13,6 +13,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
 import {createPinia} from "pinia";
+import {i18n} from "./utils/i18n.ts";
 
 const pinia = createPinia()
 
@@ -21,4 +22,4 @@ const vuetify = createVuetify({
     directives
 })
 
-createApp(App).use(vuetify).use(pinia).mount('#app')
+createApp(App).use(vuetify).use(pinia).use(i18n).mount('#app')

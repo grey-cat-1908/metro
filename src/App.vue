@@ -145,29 +145,32 @@ store.$subscribe((mutation, state) => {
       <v-container>
         <v-row>
           <v-col>
-            <h2>Основные настройки</h2>
+            <h2>{{ $t("app.main_settings") }}</h2>
             <br>
             <BaseSettings/>
           </v-col>
           <v-col>
-            <h2>Станции</h2>
+            <h2>{{ $t("app.stations") }}</h2>
             <br>
             <NewStation />
             <hr>
             <StationsTable />
           </v-col>
           <v-col>
-            <h2>Управление</h2>
+            <h2>{{ $t("app.configure") }}</h2>
             <br>
             <div class="">
-              <v-btn size="x-large" variant="flat" block color="orange" @click="exportFile">Экспорт (svg)</v-btn>
-              <v-btn size="x-large" variant="flat" block color="green" @click="save">Сохранить (json)</v-btn>
-              <v-btn size="x-large" variant="flat" block color="blue" @click="importFile">Импорт (json)</v-btn>
+              <v-btn size="x-large" variant="flat" block color="orange" @click="exportFile">{{ $t("app.export_file") }} (svg)</v-btn>
+              <v-btn size="x-large" variant="flat" block color="green" @click="save">{{ $t("app.save_file") }} (json)</v-btn>
+              <v-btn size="x-large" variant="flat" block color="blue" @click="importFile">{{ $t("app.import_file") }} (json)</v-btn>
 
               <input type="file" id="fileInput" style="display: none" @change="setFile" accept=".json" />
               <hr>
               <br>
-              <h2>Курсор: ({{ xcord }}; {{ ycord }}) |  <a class="text-right" style="text-decoration: none" href="https://arbuz.icu/blog/metro-line/">Подробнее</a></h2>
+              <h2>{{ $t("app.cursor") }}: ({{ xcord }}; {{ ycord }}) |  <a class="text-right" style="text-decoration: none" href="https://arbuz.icu/blog/metro-line/">{{ $t("app.about") }}</a> |
+                <a v-if="$i18n.locale != 'en'" @click="$i18n.locale = 'en'; sessionStorage.setItem('locale', $i18n.locale);" style="color: red; cursor: pointer;">English</a>
+                <a v-else @click="$i18n.locale = 'ru'; sessionStorage.setItem('locale', $i18n.locale);" style="color: red; cursor: pointer;">Русский</a>
+              </h2>
             </div>
           </v-col>
         </v-row>

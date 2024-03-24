@@ -9,15 +9,15 @@ const store = useStore()
   <div class="">
     <ul>
       <li>
-        <h3>Ширина схемы:</h3>
+        <h3>{{ $t('baseSettings.width')}}:</h3>
         <v-text-field v-model="store.width"></v-text-field>
       </li>
       <li>
-        <h3>Высота схемы:</h3>
+        <h3>{{ $t('baseSettings.height')}}:</h3>
         <v-text-field v-model="store.height"></v-text-field>
       </li>
       <li>
-        <h3>Линия:</h3>
+        <h3>{{ $t('baseSettings.line')}}:</h3>
         <v-dialog max-width="800">
           <template v-slot:activator="{ props: activatorProps }">
             <v-btn
@@ -26,20 +26,20 @@ const store = useStore()
                 size="x-large"
                 variant="flat"
                 block
-                text="Конфигурация"
+                :text="$t('baseSettings.configure')"
             ></v-btn>
           </template>
 
           <template v-slot:default="{ isActive }">
-            <v-card title="Конфигурация">
+            <v-card :title="$t('baseSettings.configure')">
               <template v-slot:text>
-                <h2>Название:</h2>
+                <h2>{{ $t('baseSettings.configModal.name')}}:</h2>
                 <v-text-field v-model="store.name"></v-text-field>
 
-                <h2>Номер:</h2>
+                <h2>{{ $t('baseSettings.configModal.number')}}:</h2>
                 <v-text-field v-model="store.number"></v-text-field>
 
-                <h2>Цвет:</h2>
+                <h2>{{ $t('baseSettings.configModal.color')}}:</h2>
                 <center>
                   <v-color-picker v-model="store.color" mode="hex"></v-color-picker>
                 </center>
@@ -51,7 +51,7 @@ const store = useStore()
                 <v-spacer></v-spacer>
 
                 <v-btn
-                    text="Закрыть"
+                    :text="$t('baseSettings.configModal.close')"
                     variant="text"
                     @click="isActive.value = false"
                 ></v-btn>
