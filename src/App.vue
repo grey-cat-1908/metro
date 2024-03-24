@@ -44,6 +44,26 @@ onMounted(() => {
   build();
 })
 
+function exportFile() {
+  build();
+
+  const svg = document.querySelector('svg')
+
+  const serializer = new XMLSerializer();
+  let source = serializer.serializeToString(svg);
+  let url = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(source);
+
+  let element = document.createElement('a');
+  element.setAttribute('href', url);
+  element.setAttribute('download', 'metroMap.svg');
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+  document.body.removeChild(element);
+}
+
 function importFile() {
   let element = document.getElementById('fileInput');
   element.click();
@@ -135,7 +155,7 @@ function build () {
             <br>
             <div class="">
               <v-btn size="x-large" variant="flat" block color="blue" @click="importFile">Импорт</v-btn>
-              <v-btn size="x-large" variant="flat" block color="orange">Экспорт</v-btn>
+              <v-btn size="x-large" variant="flat" block color="orange" @click="exportFile">Экспорт</v-btn>
               <v-btn size="x-large" variant="flat" block color="green" @click="save">Сохранить</v-btn>
               <v-btn size="x-large" variant="flat" block color="red" @click="build">Предпросмотр</v-btn>
 

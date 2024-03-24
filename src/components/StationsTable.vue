@@ -19,7 +19,6 @@ const store = useStore()
     <tbody>
     <tr
         v-for="i in store.stations.length"
-        :key="store.stations[i - 1].name"
     >
       <td>{{ store.stations[i - 1].name }}</td>
       <td>{{ store.stations[i - 1].step }}</td>

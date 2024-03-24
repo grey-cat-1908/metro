@@ -61,7 +61,7 @@ export class Map implements MetroMap {
             let naming = this.draw.text(stations[i].name).fill('black').font({ size: 25});
             naming.cx(cx + 30 + (naming.bbox().width / 2)).cy(cy);
             naming.font({
-                family: 'NTSomic',
+                family: 'Onest',
                 weight: '750',
                 leading: 1
             })
@@ -86,7 +86,7 @@ export class Map implements MetroMap {
 
             let text = this.draw.text(stations[i].name).font({ size: 35}).cx(last + stations[i].step).cy(textPosition);
             text.font({
-                family: 'NTSomic',
+                family: 'Onest',
                 weight: '750',
             })
         }
@@ -99,6 +99,9 @@ export class Map implements MetroMap {
         this.draw = this.draw.size(this.settings.width, this.yMax * 2);
         this.draw.clear();
 
+        // @ts-ignore
+        this.draw.style("@import url('https://fonts.googleapis.com/css2?family=Onest:wght@100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap')")
+
         this.draw.circle(50).fill(this.branch.color).cx(50).cy(50)
 
         let text = this.draw.text(this.branch.number.toString()).font({ size: 35}).fill('#fff').cx(50).cy(50);
@@ -110,7 +113,7 @@ export class Map implements MetroMap {
         let naming = this.draw.text(this.branch.name).font({ size: 35});
         naming.cx(90 + (naming.bbox().width / 2)).cy(50);
         naming.font({
-            family: 'NTSomic',
+            family: 'Onest',
             weight: '750',
         })
 
