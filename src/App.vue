@@ -162,7 +162,7 @@ function build () {
               <input type="file" id="fileInput" style="display: none" @change="setFile" accept=".json" />
               <hr>
               <br>
-              <h2>Курсор: ({{ xcord }}; {{ ycord }})</h2>
+              <h2>Курсор: ({{ xcord }}; {{ ycord }}) |  <a class="text-right" style="text-decoration: none" href="https://arbuz.icu/blog/metro-line/">Подробнее</a></h2>
             </div>
           </v-col>
         </v-row>
