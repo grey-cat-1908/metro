@@ -107,7 +107,7 @@ const messages = {
 
 // 2. Create i18n instance with options
 export const i18n = createI18n({
-    locale: sessionStorage.getItem("locale") | 'ru',
+    locale: localStorage.getItem("locale") | 'ru',
     fallbackLocale: 'ru',
     messages
 })
