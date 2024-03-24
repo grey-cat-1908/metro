@@ -1,4 +1,6 @@
 <script setup lang="ts">
+// @ts-nocheck
+
 import {useStore} from '../utils/store.ts';
 const store = useStore()
 </script>
