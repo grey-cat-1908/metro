@@ -168,7 +168,7 @@ store.$subscribe((mutation, state) => {
               <hr>
               <br>
               <h2>{{ $t("app.cursor") }}: ({{ xcord }}; {{ ycord }}) |  <a class="text-right" style="text-decoration: none" href="https://arbuz.icu/blog/metro-line/">{{ $t("app.about") }}</a> |
-                <a v-if="$i18n.locale != 'en'" @click="$i18n.locale = 'en'; sessionStorage.setItem('locale', 'en');" style="color: red; cursor: pointer;">English</a>
+                <a v-if="$i18n.locale == 'ru'" @click="$i18n.locale = 'en'; sessionStorage.setItem('locale', 'en');" style="color: red; cursor: pointer;">English</a>
                 <a v-else @click="$i18n.locale = 'ru'; sessionStorage.setItem('locale', 'ru');" style="color: red; cursor: pointer;">Русский</a>
               </h2>
             </div>
