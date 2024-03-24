@@ -33,7 +33,12 @@ let settings: Settings = new Settings(store.width, store.height);
 
 let map: Map;
 
+import { useI18n } from "vue-i18n";
+const t = useI18n();
+
 onMounted(() => {
+  t.locale.value = localStorage.getItem('locale') || 'en';
+
   store.stations = [
       {'name': 'Начало', 'up': true, 'connectedStations': [], 'step': 0},
       {'name': 'Конец', 'up': true, 'connectedStations': [], 'step': store.width - 400}
@@ -45,6 +50,10 @@ onMounted(() => {
 
   build();
 })
+
+function setStorage(val) {
+  localStorage.setItem('locale', val);
+}
 
 function exportFile() {
   build();
@@ -168,8 +177,8 @@ store.$subscribe((mutation, state) => {
               <hr>
               <br>
               <h2>{{ $t("app.cursor") }}: ({{ xcord }}; {{ ycord }}) |  <a class="text-right" style="text-decoration: none" href="https://arbuz.icu/blog/metro-line/">{{ $t("app.about") }}</a> |
-                <a v-if="$i18n.locale == 'ru'" @click="$i18n.locale = 'en'; window.localStorage.setItem('locale', 'en');" style="color: red; cursor: pointer;">English</a>
-                <a v-else @click="$i18n.locale = 'ru'; window.localStorage.setItem('locale', 'ru');" style="color: red; cursor: pointer;">Русский</a>
+                <a v-if="$i18n.locale == 'ru'" @click="$i18n.locale = 'en'; setStorage('en');" style="color: red; cursor: pointer;">English</a>
+                <a v-else @click="$i18n.locale = 'ru'; setStorage('ru')" style="color: red; cursor: pointer;">Русский</a>
               </h2>
             </div>
           </v-col>

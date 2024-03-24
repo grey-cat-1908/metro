@@ -20,6 +20,6 @@ const pinia = createPinia()
 const vuetify = createVuetify({
     components,
     directives
-})
+});
 
 createApp(App).use(vuetify).use(pinia).use(i18n).mount('#app')
