@@ -11,7 +11,7 @@ import {ExtraBranch} from "./models/map/extraBranch.ts";
 import {useEventListener} from '@vueuse/core'
 import {Settings} from "./models/settings.ts";
 
-import {stringify} from 'flatted';
+import {parse, stringify} from 'flatted';
 
 const element = ref<HTMLDivElement>()
 
@@ -86,7 +86,7 @@ function setFile(event) {
   const reader = new FileReader();
   reader.addEventListener('load', (readEvent) => {
     if (typeof readEvent.target.result === "string") {
-      let importedStore = JSON.parse(readEvent.target.result);
+      let importedStore = parse(readEvent.target.result);
 
       store.name = importedStore.name;
       store.width = importedStore.width;
