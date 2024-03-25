@@ -11,6 +11,8 @@ import {ExtraBranch} from "./models/map/extraBranch.ts";
 import {useEventListener} from '@vueuse/core'
 import {Settings} from "./models/settings.ts";
 
+import {stringify} from 'flatted';
+
 const element = ref<HTMLDivElement>()
 
 const xcord = ref(0);
@@ -100,7 +102,7 @@ function setFile(event) {
 }
 
 function save () {
-  let text = JSON.stringify(store);
+  let text = stringify(store);
   let filename = 'metroMap.json';
   let element = document.createElement('a');
   element.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(text));
