@@ -24,8 +24,17 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      - name: Generate package-lock.json if missing
+        run: |
+          if [ ! -f package-lock.json ]; then
+            npm install --package-lock-only
+            echo "Generated package-lock.json"
+          else
+            echo "package-lock.json already exists"
+          fi
+
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build project
         run: npm run build
